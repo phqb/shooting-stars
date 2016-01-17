@@ -1,0 +1,67 @@
+<!-- Source: https://github.com/shakiba/stage.js/blob/master/example/basic-grid/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="A mini game inspired by The Night Sky">
+  <meta name="keywords" content="stars shooting star night sky">
+  <meta name="author" content="phqb">
+  <title>phqb::Shooting Stars</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link href='https://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
+  <script src="easeljs-0.8.2.min.js"></script>
+  <script src="tweenjs-0.6.2.min.js"></script>
+  <script src="utils.js"></script>
+  <script src="app.js"></script>
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "8048ca84-440f-423c-a8d5-d4ad189b6541", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+</head>
+<body onload="app();">
+  <div class="content">
+    <h1>Shooting Stars</h1>
+    <h2>A mini game inspired by The Night Sky</h2>
+    <br>
+    <h3>Instructions:</h3>
+    <h3>You and your friend are The Yellow Star and The White Star.</h3>
+    <h3>Pull your stars backward to shoot your friend's stars.</h3>
+    <h3>If you shoot all your friend's stars, you win.</h3>
+    <h3>The Yellow Star goes first.</h3>
+    <br></br>
+    <div id="app-container">
+      <canvas id="app" width="840" height="480"></canvas>
+    </div>
+    <br>
+    <span class="btn" onclick="start_game();">Reload</span>
+    <span class="btn" onclick="goFullScreen();">Fullscreen</span>
+    <span class="btn" onclick="take_a_screenshot();">Take a screenshoot</span>
+    <br><br>
+    <h2>Tell friends</h2>
+    <ul class="share-btn">
+      <li><span class='st_googleplus_large' displayText='Google +'></span></li>
+      <li><span class='st_facebook_large' displayText='Facebook'></span></li>
+      <li><span class='st_twitter_large' displayText='Tweet'></span></li>
+      <li><span class='st_tumblr_large' displayText='Tumblr'></span></li>
+      <li><span class='st__large' displayText=''></span></li>
+      <li><span class='st_pinterest_large' displayText='Pinterest'></span></li>
+      <li><span class='st_linkedin_large' displayText='LinkedIn'></span></li>
+      <li><span class='st_email_large' displayText='Email'></span></li>
+    </ul>
+    <br><br>
+    <h2>About</h2>
+    <h3>This game is made with <a href="http://createjs.com/">createJS</a> (EaselJS and TweenJS).</h3>
+    <h3>This website is designed by <i>phqb</i> (see Contact Author).</h3>
+    <h3>The author does not own any graphic content in this website.</h3>
+    <br><br>
+    <h2>Contact Author</h2>
+    <h3><a href="mailto:o0o.baoquocphan.o0o@gmail.com">o0o.baoquocphan.o0o@gmail.com</a></h3>
+    <h3><a href="https://www.facebook.com/phqbtk">Facebook</a></h3>
+    <h3><a href="https://plus.google.com/118246015296786638665">Google Plus</a></h3>
+    <h3><a href="https://www.tumblr.com/blog/baoquocphan">Tumblr</a></h3>
+    <h3><a href="https://twitter.com/lucyxyuno">Twitter</a></h3>
+    <br><br>
+    <h2>Source code</h2>
+    <h3><a href="">Github</a> (updating)</h3>
+  </div>
+</body>
+</html>
