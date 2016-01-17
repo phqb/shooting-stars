@@ -145,6 +145,7 @@ Dot.prototype.hide_ring = function(event) {
 
 function app() {
   stage = new createjs.Stage('app');
+  createjs.Touch.enable(stage);
 
   start_game();
 
