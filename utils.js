@@ -79,7 +79,7 @@ function show_notification(msg) {
 
 function take_a_screenshot() {
   var canvas = document.getElementById('app');
-  var img = canvas.toDataURL("image/jpeg", 1.0);
+  var img = canvas.toDataURL("image/png", 1.0);
   window.open(img, '');
 }
 
