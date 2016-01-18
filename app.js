@@ -58,6 +58,9 @@ Dot.prototype.update_elements_pos = function() {
 Dot.prototype.begin_draw = function() {
   stage.addChild(this.circle);
   stage.addChild(this.ring);
+  createjs.Tween.get(this.circle.shadow, { loop : true })
+    .to({ blur : rand()*8 }, 4000, createjs.Ease.sineOut)
+    .to({ blur : 8 }, 4000, createjs.Ease.sineOut);
 };
 
 Dot.prototype.show_ring = function(event) {
@@ -109,13 +112,20 @@ Dot.prototype.hide_ring = function(event) {
   if (!(new_x < 0 || new_x > ww || new_y < 0 || new_y > wh)) {
     var new_dot = new Dot(this.type, this.circle.x, this.circle.y);
     new_dot.begin_draw();
-    if (this.type == 'player1') player1_dots.push(new_dot); else player2_dots.push(new_dot);
+    if (this.type == 'player1')
+      player1_dots.push(new_dot);
+    else
+      player2_dots.push(new_dot);
 
     createjs.Tween.get(new_dot.circle, { loop : false })
       .to({ x : new_x, y : new_y }, 200, createjs.Ease.sineOut());
   }
 
-  var ene; if (this.type == 'player1') ene = player2_dots; else ene = player1_dots;
+  var ene;
+  if (this.type == 'player1')
+    ene = player2_dots;
+  else
+    ene = player1_dots;
 
   var seg = new Segment(
     new Vector2(this.circle.x, this.circle.y),
@@ -140,7 +150,10 @@ Dot.prototype.hide_ring = function(event) {
   else if (player2_dots.length == 0)
     show_notification(type_str['player1'] + ' win!');
 
-  if (cur_turn == 'player1') cur_turn = 'player2'; else cur_turn = 'player1';
+  if (cur_turn == 'player1')
+    cur_turn = 'player2';
+  else
+    cur_turn = 'player1';
 };
 
 function app() {
@@ -149,6 +162,6 @@ function app() {
 
   start_game();
 
-  createjs.Ticker.setFPS(60);
+  createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener('tick', stage);
 }
