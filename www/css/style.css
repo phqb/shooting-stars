@@ -1,7 +1,7 @@
 body {
   margin: 0;
   background-color: #000539;
-  background-image: url('img/bg-static.jpg');
+  background-image: url('../img/bg-static.jpg');
   background-size: cover;
   background-attachment: fixed;
   color: white;
