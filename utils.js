@@ -30,7 +30,7 @@ function Segment(u, v) {
 
 Segment.prototype.dist_to = function(p) {
   return Math.abs(this.a*p.u + this.b*p.v + this.c)
-    /Math.sqrt(Math.pow(p.u, 2) + Math.pow(p.v, 2));
+    /Math.sqrt(Math.pow(this.a, 2) + Math.pow(this.b, 2));
 };
 
 Segment.prototype.is_point_in = function(p, delta) {
