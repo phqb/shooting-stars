@@ -69,7 +69,8 @@ function Player(type) {
 }
 
 Player.prototype.select = function(event) {
-  var min_dst = Math.pow(10, 2), dot;
+  this.cur = -1;
+  var min_dst = Math.pow(24, 2);
   for (i = 0; i < this.dots.length; i++) {
     var dst = Math.pow((this.dots[i].x - event.stageX), 2) + Math.pow((this.dots[i].y - event.stageY), 2);
     if (dst < min_dst) {
@@ -134,12 +135,12 @@ Player.prototype.add = function(dot) {
 };
 
 Player.prototype.switch_turn = function() {
-  game.stage.removeAllEventListeners('mousedown');
-  game.stage.removeAllEventListeners('pressmove');
-  game.stage.removeAllEventListeners('pressup');
-  game.stage.addEventListener('mousedown', this.select.bind(this));
-  game.stage.addEventListener('pressmove', this.aim.bind(this));
-  game.stage.addEventListener('pressup', this.fire.bind(this));
+  game.stage.removeAllEventListeners('stagemousedown');
+  game.stage.removeAllEventListeners('stagemousemove');
+  game.stage.removeAllEventListeners('stagemouseup');
+  game.stage.addEventListener('stagemousedown', this.select.bind(this));
+  game.stage.addEventListener('stagemousemove', this.aim.bind(this));
+  game.stage.addEventListener('stagemouseup', this.fire.bind(this));
 };
 
 function Dot(type, x, y) {
