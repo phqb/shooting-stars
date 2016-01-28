@@ -2,27 +2,32 @@ rand = Math.random;
 
 var type_color = { p1 : '#FAE639', p2 : 'white' };
 var type_str = { p1 : 'Yellow', p2 : 'White' };
-var game = null;
+var kills_str = { 2 : 'Double', 3 : 'Triple', 4 : 'Quadra', 5 : 'Penta' };
 
-function Game(ww, wh) {
+function Game(ww, wh, id) {
+  var old = document.getElementById(id);
+  var ctx = old.getContext('2d');
+  ctx.clearRect(0, 0, old.width, old.height)
   this.ww = ww;
   this.wh = wh;
-  this.stage = new createjs.Stage('app');
+  this.stage = new createjs.Stage(id);
   createjs.Touch.enable(this.stage);
   this.p1 = null;
   this.p2 = null;
   this.stars = [];
-  this.go_noti = new createjs.Text('', '48px Playfair Display');
-  this.go_noti.x = ww/2 - 150;
-  this.go_noti.y = wh/2 - 24;
-  this.go_noti.addEventListener('mousedown', this.start.bind(this));
+  this.notification = new createjs.Text('', '48px Playfair Display');
+  this.notification.x = ww/2;
+  this.notification.y = wh/2 - 24;
+  this.notification.scaleX = this.notification.scaleY = 0;
+  this.notification.textAlign = 'center';
+  this.notification.shadow = new createjs.Shadow('white', 0, 0, 8);
 }
 
 Game.prototype.start = function() {
   this.stage.removeAllChildren();
   this.stage.removeAllEventListeners();
-  this.p1 = new Player('p1');
-  this.p2 = new Player('p2');
+  this.p1 = new Player('p1', this);
+  this.p2 = new Player('p2', this);
   this.p1.enemy = this.p2;
   this.p2.enemy = this.p1;
   this.p1.point_text.shadow.blur = 8;
@@ -46,15 +51,27 @@ Game.prototype.start = function() {
   }
 }
 
-Game.prototype.over = function(type) {
-  this.go_noti.text = type_str[type] + ' win!';
-  this.go_noti.color = type_color[type];
-  this.go_noti.shadow = new createjs.Shadow(type_color[type], 0, 0, 8);
-  this.stage.addChild(this.go_noti);
+Game.prototype.show_notification = function(str, color, out = false, evt = {}) {
+  this.notification.text = str;
+  this.notification.color = this.notification.shadow.color = color;
+  if (out) {
+    createjs.Tween.get(this.notification, { loop : false })
+      .to({ scaleX : 1, scaleY : 1 }, 100, createjs.Ease.linear)
+      .to({ scaleX : 1, scaleY : 1 }, 100, createjs.Ease.linear)
+      .to({ scaleX : 0, scaleY : 0 }, 100, createjs.Ease.linear);
+  } else {
+    createjs.Tween.get(this.notification, { loop : false })
+      .to({ scaleX : 1, scaleY : 1 }, 100, createjs.Ease.linear);
+    this.notification.removeAllEventListeners();
+    this.notification.addEventListener(evt.on, evt.event);
+  }
+  this.stage.addChild(this.notification);
+  this.notification.scaleX = this.notification.scaleY = 0;
 }
 
-function Player(type) {
+function Player(type, game) {
   this.type = type;
+  this.game = game;
   this.dots = [];
   this.edges = [];
   this.points = 0;
@@ -63,8 +80,8 @@ function Player(type) {
   this.point_text.x = this.point_text.y = 10;
   if (type == 'p2') this.point_text.x = 46;
   this.point_text.shadow = new createjs.Shadow(type_color[type], 0, 0, 0);
-  game.stage.addChild(this.point_text);
-  this.cur = -1;
+  this.game.stage.addChild(this.point_text);
+  this.cur = this.master = -1;
   this.enemy = null;
 }
 
@@ -72,7 +89,9 @@ Player.prototype.select = function(event) {
   this.cur = -1;
   var min_dst = Math.pow(24, 2);
   for (i = 0; i < this.dots.length; i++) {
-    var dst = Math.pow((this.dots[i].x - event.stageX), 2) + Math.pow((this.dots[i].y - event.stageY), 2);
+    var dst =
+      Math.pow((this.dots[i].x - event.stageX), 2) +
+      Math.pow((this.dots[i].y - event.stageY), 2);
     if (dst < min_dst) {
       min_dst = dst;
       this.cur = i;
@@ -95,14 +114,13 @@ Player.prototype.fire = function(event) {
     .lineTo(p.x, p.y)
     .endStroke();
   this.edges.push(edge);
-  game.stage.addChild(edge);
+  this.game.stage.addChild(edge);
   createjs.Tween.get(edge, { loop : false })
     .to({ alpha : 0.75 }, 200, createjs.Ease.linear);
-  if (!(p.x < 0 || p.x > game.ww || p.y < 0 || p.y > game.wh)) {
+  if (!(p.x < 0 || p.x > this.game.ww || p.y < 0 || p.y > this.game.wh)) {
     var dot = new Dot(this.type, this.dots[this.cur].x, this.dots[this.cur].y);
-    dot.begin_draw();
     dot.x = p.x; dot.y = p.y;
-    this.dots.push(dot);
+    this.add(dot);
     createjs.Tween.get(dot.circle, { loop : false })
       .to({ x : dot.x, y : dot.y }, 200, createjs.Ease.sineOut());
   }
@@ -110,47 +128,63 @@ Player.prototype.fire = function(event) {
     new Vector2(this.dots[this.cur].x, this.dots[this.cur].y),
     new Vector2(p.x, p.y)
   );
+  var kills = 0, master_killed = false;
   for (i = 0; i < this.enemy.dots.length; ++i)
     if (seg.is_point_in(new Vector2(
         this.enemy.dots[i].x,
         this.enemy.dots[i].y
-    ), 3)) {
+    ), this.enemy.dots[i].r)) {
+      if (i == this.enemy.master) master_killed = true;
       this.enemy.dots[i].circle.graphics
         .beginFill('gray')
         .drawCircle(0, 0, 6)
         .endFill();
-      this.enemy.dots.splice(i, 1); i--; this.points++;
+      this.enemy.dots.splice(i, 1); i--; this.points++; kills++;
     }
-  if (this.enemy.dots.length == 0) game.over(this.type);
+  if (this.enemy.dots.length == 0 || master_killed)
+    this.game.show_notification(
+      type_str[this.type] + ' win!',
+      type_color[this.type],
+      false,
+      { event : app, on : 'mousedown' }
+    );
+  else if (kills > 1)
+    this.game.show_notification(
+      (kills <= 5 ? kills_str[kills] : 'Crazy') + ' kill!',
+      type_color[this.type],
+      true
+    );
   this.enemy.switch_turn();
   this.point_text.shadow.blur = 0;
   this.enemy.point_text.shadow.blur = 8;
   this.point_text.text = this.points.toString();
-
 };
 
 Player.prototype.add = function(dot) {
   this.dots.push(dot);
-  this.dots[this.dots.length - 1].begin_draw();
+  this.dots[this.dots.length - 1].begin_draw(this.game.stage);
+  if (dot.r > (this.master >= 0?this.dots[this.master].r:Number.MIN_VALUE))
+    this.master = this.dots.length - 1;
 };
 
 Player.prototype.switch_turn = function() {
-  game.stage.removeAllEventListeners('stagemousedown');
-  game.stage.removeAllEventListeners('stagemousemove');
-  game.stage.removeAllEventListeners('stagemouseup');
-  game.stage.addEventListener('stagemousedown', this.select.bind(this));
-  game.stage.addEventListener('stagemousemove', this.aim.bind(this));
-  game.stage.addEventListener('stagemouseup', this.fire.bind(this));
+  this.game.stage.removeAllEventListeners('stagemousedown');
+  this.game.stage.removeAllEventListeners('stagemousemove');
+  this.game.stage.removeAllEventListeners('stagemouseup');
+  this.game.stage.addEventListener('stagemousedown', this.select.bind(this));
+  this.game.stage.addEventListener('stagemousemove', this.aim.bind(this));
+  this.game.stage.addEventListener('stagemouseup', this.fire.bind(this));
 };
 
 function Dot(type, x, y) {
+  this.r = rand()*4 + 4;
   this.x = x; this.y = y;
   this.ring_mradius = 48; // max scale = 2
   this.dir = null;
   this.circle = new createjs.Shape();
   this.circle.graphics
     .beginFill(type_color[type])
-    .drawCircle(0, 0, 6)
+    .drawCircle(0, 0, this.r)
     .endFill();
   this.circle.alpha = 0.75;
   this.circle.x = x;
@@ -171,12 +205,12 @@ Dot.prototype.update_elements_pos = function() {
   this.ring.y = this.circle.y = this.y;
 };
 
-Dot.prototype.begin_draw = function() {
-  game.stage.addChild(this.circle);
-  game.stage.addChild(this.ring);
+Dot.prototype.begin_draw = function(stage) {
+  stage.addChild(this.circle);
+  stage.addChild(this.ring);
   createjs.Tween.get(this.circle.shadow, { loop : true })
-    .to({ blur : rand()*8 }, 4000, createjs.Ease.sineOut)
-    .to({ blur : 8 }, 4000, createjs.Ease.sineOut);
+    .to({ blur : rand()*8 }, 4000, createjs.Ease.linear)
+    .to({ blur : 8 }, 4000, createjs.Ease.linear);
 };
 
 Dot.prototype.show_ring = function(event) {
@@ -216,9 +250,10 @@ function take_a_screenshot() {
   window.open(img, '');
 }
 
-// Src: http://stackoverflow.com/questions/16124569/how-can-i-make-the-html5-canvas-go-fullscreen
-function goFullScreen(){
-  var canvas = document.getElementById('app');
+// Src: http://stackoverflow.com/questions/16124569/
+// how-can-i-make-the-html5-canvas-go-fullscreen
+function goFullScreen(id){
+  var canvas = document.getElementById(id);
   if(canvas.requestFullScreen)
     canvas.requestFullScreen();
   else if(canvas.webkitRequestFullScreen)
@@ -228,8 +263,8 @@ function goFullScreen(){
 }
 
 function app() {
-  game = new Game(840, 480);
-  game.start();
+  new_game = new Game(840, 480, 'app');
+  new_game.start();
   createjs.Ticker.setFPS(30);
-  createjs.Ticker.addEventListener('tick', game.stage);
+  createjs.Ticker.addEventListener('tick', new_game.stage);
 }
