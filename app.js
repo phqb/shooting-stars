@@ -7,7 +7,7 @@ var kills_str = { 2 : 'Double', 3 : 'Triple', 4 : 'Quadra', 5 : 'Penta' };
 function Game(ww, wh, id) {
   var old = document.getElementById(id);
   var ctx = old.getContext('2d');
-  ctx.clearRect(0, 0, old.width, old.height)
+  ctx.clearRect(0, 0, old.width, old.height);
   this.ww = ww;
   this.wh = wh;
   this.stage = new createjs.Stage(id);
