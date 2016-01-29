@@ -49,7 +49,7 @@ Game.prototype.start = function() {
       .to({ x : rand()*this.ww, y : rand()*this.wh }, 100, createjs.Ease.none);
     this.stage.addChild(this.stars[i]);
   }
-}
+};
 
 Game.prototype.show_notification = function(str, color, out = false, evt = {}) {
   this.notification.text = str;
