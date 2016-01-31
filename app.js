@@ -51,7 +51,9 @@ Game.prototype.start = function() {
   }
 };
 
-Game.prototype.show_notification = function(str, color, out = false, evt = {}) {
+Game.prototype.show_notification = function(str, color, out, evt) {
+  if (out === undefined) out = false;
+  if (evt === undefined) evt = {};
   this.notification.text = str;
   this.notification.color = this.notification.shadow.color = color;
   if (out) {
