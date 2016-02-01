@@ -11,6 +11,7 @@ function Game(ww, wh, id) {
   this.ww = ww;
   this.wh = wh;
   this.stage = new createjs.Stage(id);
+  this.stage.mouseMoveOutside = true;
   createjs.Touch.enable(this.stage);
   this.p1 = null;
   this.p2 = null;
@@ -224,7 +225,8 @@ Dot.prototype.show_ring = function(event) {
 Dot.prototype.update_ring = function(event) {
   this.update_elements_pos();
   this.dir =
-    new Vector2(event.stageX - this.x, event.stageY - this.y);
+    //new Vector2(event.stageX - this.x, event.stageY - this.y);
+    new Vector2(event.rawX - this.x, event.rawY - this.y);
   var r = this.dir.length();
   if (r > this.ring_mradius) {
     var k = r/this.ring_mradius;
