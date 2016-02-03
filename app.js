@@ -279,7 +279,12 @@ function scroll() {
 }
 
 function app() {
-  new_game = new Game(1280, 720, 'app');
+  var w = window.innerWidth, h = window.innerHeight;
+  if (w < h) { var tmp = w; w = h; h = tmp; }
+  var cv = document.getElementById('app');
+  cv.setAttribute('width', w + 'px');
+  cv.setAttribute('height', h + 'px');
+  new_game = new Game(w, h, 'app');
   new_game.start();
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener('tick', new_game.stage);
