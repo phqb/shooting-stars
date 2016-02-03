@@ -282,8 +282,9 @@ function app() {
   var w = window.innerWidth, h = window.innerHeight;
   if (w < h) { var tmp = w; w = h; h = tmp; }
   var cv = document.getElementById('app');
-  cv.setAttribute('width', w + 'px');
-  cv.setAttribute('height', h + 'px');
+  var isr = isRetina();
+  cv.setAttribute('width', isr ? 2*w : w + 'px');
+  cv.setAttribute('height', isr ? 2*h : h + 'px');
   new_game = new Game(w, h, 'app');
   new_game.start();
   createjs.Ticker.setFPS(30);
