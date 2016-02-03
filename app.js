@@ -254,21 +254,34 @@ function take_a_screenshot() {
   window.open(img, '');
 }
 
-// Src: http://stackoverflow.com/questions/16124569/
-// how-can-i-make-the-html5-canvas-go-fullscreen
-function goFullScreen(id){
-  var canvas = document.getElementById(id);
-  if(canvas.requestFullScreen)
-    canvas.requestFullScreen();
-  else if(canvas.webkitRequestFullScreen)
-    canvas.webkitRequestFullScreen();
-  else if(canvas.mozRequestFullScreen)
-    canvas.mozRequestFullScreen();
+function resize() {
+  var cv = document.getElementById('app');
+  if (window.innerWidth/window.innerHeight > 1280/720) {
+    cv.style.width = "auto";
+    cv.style.height = window.innerHeight + 'px';
+  } else {
+    cv.style.width = window.innerWidth + 'px';
+    cv.style.height = "auto";
+  }
+}
+
+var app_snapped = false;
+
+function scroll() {
+  var cv = document.getElementById('app');
+  if ((window.scrollY + window.innerHeight - cv.offsetTop)/cv.offsetHeight >= 0.5) {
+    if (!app_snapped) {
+      window.scrollTo(window.scrollX, cv.offsetTop);
+      app_snapped = true;
+    }
+  } else
+    app_snapped = false;
 }
 
 function app() {
-  new_game = new Game(840, 480, 'app');
+  new_game = new Game(1280, 720, 'app');
   new_game.start();
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener('tick', new_game.stage);
+  resize();
 }

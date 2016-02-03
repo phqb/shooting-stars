@@ -69,4 +69,7 @@ a {
   outline-style: solid;
   outline-color: rgba(4, 13, 84, 0.5);
   outline-width: 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
