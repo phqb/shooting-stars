@@ -13,7 +13,7 @@ function Game(ww, wh, id) {
   this.wh = wh;
   this.stage = new createjs.Stage(id);
   this.stage.mouseMoveOutside = true;
-  createjs.Touch.enable(this.stage);
+  createjs.Touch.enable(this.stage, true, true);
   this.p1 = null;
   this.p2 = null;
   this.stars = [];
