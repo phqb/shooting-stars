@@ -141,7 +141,7 @@ Player.prototype.fire = function(event) {
       if (i == this.enemy.master) master_killed = true;
       this.enemy.dots[i].circle.graphics
         .beginFill('gray')
-        .drawCircle(0, 0, 6*factor)
+        .drawCircle(0, 0, this.enemy.dots[i].r)
         .endFill();
       this.enemy.dots.splice(i, 1); i--; this.points++; kills++;
     }
