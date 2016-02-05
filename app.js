@@ -255,7 +255,7 @@ function take_a_screenshot() {
 
 function resize() {
   var cv = document.getElementById('app');
-  if (window.innerWidth/window.innerHeight > 16/9) {
+  if (window.innerWidth/window.innerHeight > cv.offsetWidth/cv.offsetHeight) {
     cv.style.width = "auto";
     cv.style.height = window.innerHeight + 'px';
   } else {
