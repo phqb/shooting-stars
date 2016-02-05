@@ -1,10 +1,9 @@
 body {
   margin: 0;
   background-color: #000539;
-  background-image: url('../img/bg-static.jpg');
-  background-size: cover;
-  background-attachment: fixed;
   color: white;
+  height: 100%;
+  font-family: 'Playfair Display', serif;
 }
 
 .content {
@@ -14,7 +13,6 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: 'Playfair Display', serif;
   text-align: center;
   font-weight: normal;
   width: 100%;
@@ -48,6 +46,7 @@ a {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 16px;
 }
 
 .btn:hover {
@@ -55,21 +54,64 @@ a {
   color: #000539;
 }
 
-.share-btn {
-  list-style-type: none;
-  padding: 0;
-}
-
-.share-btn li {
-  display: inline;
+#menu {
+  position: absolute;
+  top: calc(100% - 47px);
+  left: 0;
+  display: none;
 }
 
 #app {
-  background: rgba(4, 13, 84, 0.8);
-  outline-style: solid;
-  outline-color: rgba(4, 13, 84, 0.5);
-  outline-width: 16px;
+  background: rgb(4, 13, 84);
   display: block;
   margin-left: auto;
   margin-right: auto;
+  outline-style: solid;
+  outline-color: rgba(4, 13, 84, 0.5);
+  outline-width: 16px;
+}
+
+#app-ctn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#welcome {
+  position: absolute;
+  top: calc(50% - 292px);
+  left: 0; top: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  z-index: 1;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  background: #000539;
+}
+
+#welcome h1 {
+  font-size: 48px;
+}
+
+#welcome h2 {
+  font-size: 20px;
+}
+
+#welcome h3 {
+  font-size: 16px;
+}
+
+.blinkme {
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0.0; }
 }

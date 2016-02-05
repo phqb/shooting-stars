@@ -19,7 +19,7 @@ function Game(ww, wh, id) {
   this.stars = [];
   this.notification = new createjs.Text('', 48*factor + 'px Playfair Display');
   this.notification.x = ww/2;
-  this.notification.y = wh/2;
+  this.notification.y = wh/2 - 24*factor;
   this.notification.scaleX = this.notification.scaleY = 0;
   this.notification.textAlign = 'center';
   this.notification.shadow = new createjs.Shadow('white', 0, 0, 8*factor);
@@ -34,8 +34,10 @@ Game.prototype.start = function() {
   this.p2.enemy = this.p1;
   this.p1.point_text.shadow.blur = 8*factor;
   this.p1.switch_turn();
-  this.p1.add(new Dot('p1', rand()*this.ww, rand()*this.wh));
-  this.p2.add(new Dot('p2', rand()*this.ww, rand()*this.wh));
+  this.p1.add(new Dot('p1', 8*factor + rand()*(this.ww - 16*factor),
+    8*factor + rand()*(this.wh - 16*factor)));
+  this.p2.add(new Dot('p2', 8*factor + rand()*(this.ww - 16*factor),
+    8*factor + rand()*(this.wh - 16*factor)));
   for (i = 0; i < 100; ++i) {
     this.stars[i] = new createjs.Shape();
     this.stars[i].graphics
@@ -255,26 +257,35 @@ function take_a_screenshot() {
 
 function resize() {
   var cv = document.getElementById('app');
-  if (window.innerWidth/window.innerHeight > 16/9) {
+  if (window.innerWidth/window.innerHeight > cv.offsetWidth/cv.offsetHeight) {
     cv.style.width = "auto";
     cv.style.height = window.innerHeight + 'px';
   } else {
     cv.style.width = window.innerWidth + 'px';
     cv.style.height = "auto";
   }
+  cv.style.marginTop = window.innerHeight/2 - cv.offsetHeight/2 + 'px';
 }
 
-var app_snapped = false;
-
 function scroll() {
-  var cv = document.getElementById('app');
-  if ((window.scrollY + window.innerHeight - cv.offsetTop)/cv.offsetHeight >= 0.5) {
-    if (!app_snapped) {
-      window.scrollTo(window.scrollX, cv.offsetTop);
-      app_snapped = true;
-    }
-  } else
-    app_snapped = false;
+  document.getElementById('app-ctn').style.top = window.scrollY + 'px';
+}
+
+var last_show_menu_time = -1;
+
+function show_menu() {
+  document.getElementById('menu').style.display = "block";
+  last_show_menu_time = createjs.Ticker.getTime();
+}
+
+function hide_menu() {
+  document.getElementById('menu').style.display = "none";
+  last_show_menu_time = -1;
+}
+
+function show_app() {
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
 }
 
 function app() {
@@ -288,5 +299,8 @@ function app() {
   new_game.start();
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener('tick', new_game.stage);
+  createjs.Ticker.addEventListener('tick', function() {
+    if (createjs.Ticker.getTime() - last_show_menu_time >= 2000) hide_menu();
+  });
   resize();
 }
