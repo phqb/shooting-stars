@@ -5,7 +5,7 @@
   <meta name="description" content="A mini game inspired by The Night Sky">
   <meta name="keywords" content="stars shooting star night sky">
   <meta name="author" content="phqb">
-  <meta property="og:image" content="http://lucyxyuno.github.io/shooting-stars/icon.png"/>
+  <meta property="og:image" content="http://lucyxyuno.github.io/shooting-stars/img/icon.png"/>
   <title>phqb::Shooting Stars</title>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -14,11 +14,8 @@
   <script src="js/tweenjs-0.6.2.min.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/app.js"></script>
-  <script type="text/javascript">var switchTo5x=true;</script>
-  <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-  <script type="text/javascript">stLight.options({publisher: "8048ca84-440f-423c-a8d5-d4ad189b6541", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 </head>
-<body onload="app();">
+<body onload="app();" onresize="resize();" onscroll="scroll();">
   <div class="content">
     <h1>Shooting Stars</h1>
     <h2>A mini game inspired by The Night Sky</h2>
@@ -26,27 +23,48 @@
     <h3>Instructions:</h3>
     <h3>You and your friend are The Yellow Star and The White Star.</h3>
     <h3>Pull your stars backward to shoot your friend's stars.</h3>
+    <h3><b>If you shoot your friend's biggest star, you win.</b></h3>
     <h3>If you shoot all your friend's stars, you win.</h3>
     <h3>The Yellow Star goes first.</h3>
     <br></br>
-    <div class="app">
-      <canvas id="app" width="840" height="480"></canvas>
-    </div>
+  </div>
+  <canvas id="app"></canvas>
+  <div class="content">
     <br>
-    <span class="btn" onclick="game.start();">Reload</span>
-    <span class="btn" onclick="goFullScreen();">Fullscreen</span>
+    <span class="btn" onclick="app();">Reload</span>
     <span class="btn" onclick="take_a_screenshot();">Take a screenshoot</span>
-    <br><br>
     <h2>Tell friends</h2>
     <ul class="share-btn">
-      <li><span class='st_googleplus_large' displayText='Google +'></span></li>
-      <li><span class='st_facebook_large' displayText='Facebook'></span></li>
-      <li><span class='st_twitter_large' displayText='Tweet'></span></li>
-      <li><span class='st_tumblr_large' displayText='Tumblr'></span></li>
-      <li><span class='st__large' displayText=''></span></li>
-      <li><span class='st_pinterest_large' displayText='Pinterest'></span></li>
-      <li><span class='st_linkedin_large' displayText='LinkedIn'></span></li>
-      <li><span class='st_email_large' displayText='Email'></span></li>
+      <li>
+        <a href="https://plus.google.com/share?url=lucyxyuno.github.io/shooting-stars">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACVklEQVRYhb3XX2jOURzH8W0mymoLuZkLSS1KEaWJG5NSygVxIUoWF/4UuUButBViNffciOTGXIi4kMiF/ClDIbmRRZgxsmn2cvE7q5/jeWy/3++xc/k838/n837Oec4531NVlXGgDltwAU/Ri2HlxyBOoiFrVhxci/34hgc4iL24iF9R6G0cQzvmFAoO4fW4F8yPoib6fjk+pwAGsKJwcDCvxd1g/BDVZepWR0vRh8ZKAOxJmR4epfZStBSniobX4E3KcPMo9csigD5MKAKwKDLcPkp9NXoizawiAOsjs6Nj0HRFmqZKAlwdg6YzVT+EuiIA8yOAAUzPAHA9d3jK8EkE0TZK/ZVQN4yllQBY48/9PYiFZWpnh1mCvYXDU8aHo1n4iNVRzVK8DOu+q2LhqYB1eBWBPJccPg/DLA1hY8XDUxA1aMZutEV/ODj338LLALVGAMfHG2BPBPBekYMnB8DcsO7p8QGrxhOiw99jCPsqHTQJKyVdzrWw5X6UCE+P9koE1+MQ3gXTHpzGNkknNE9yAG1FfwmI1iLhi/A6GH3FTkz8R30TuiOAXtTnCZ+H78HkhzLHbwldA25FEDvyADxKGZzIqG3A25S+M2t4c/QLMm8rScs+MjqyindHAC05AFpS+n+2cqXE8Ql3IAfA2qD9iRlZxUsigB5My+hxPmjz3Q+4GUHcN8aHBjZJruc7mJwXYCZeRBD9OI4Fon5fclUvxtkQfhlTcoWnTKfijL8fnyMwz8LMPMaX8Hk3NhQKLgHSKHkZd0nugN4Q9knSJd3AETma0N8aZ+EaNqv+LQAAAABJRU5ErkJggg=="/>
+        </a>
+      </li>
+      <li>
+        <a href="http://www.facebook.com/sharer.php?u=lucyxyuno.github.io/shooting-stars">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABFklEQVRYhe2XvYrCQBSFL8I+gJWdS8TWF9h6wa18Ax/MqKWNtjbb+C7iD2gVtTafRRxQuVlHM5PZIgdOlzPnI7mQuSJXAW1gDGzwo/R6dgxEcivgBzh5KtZ0BLqmPCq53CgBIgFGAcqNhoK/b26jjZANh0vtgQUwffBWeTYVh8U7oA98iCJgroVcAayAllZcBsAZ+Pqr3DfA7Fm5b4BeaICGUjazDbsAqCkA59IAcl63ff6NzgkwMM4BGCheugJo2gydzyGsAIIDdIC6cU5ZXfGvK4D7A3QA+3wFUAH8B4BCl9KCAGnha3lBgLUAw4AAsVnNkgAACfBpAl2yhbEsgAPw/Rhqkq3Oa14YzBcAUrL9Iebmh3YBZcDmjUb/EX0AAAAASUVORK5CYII="/>
+        </a>
+      </li>
+      <li>
+        <a href="https://twitter.com/share?url=lucyxyuno.github.io/shooting-stars">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABIElEQVRYhe3XsUoDQRQF0CBoaxXBIJjGykbQPiD4A1YWolZWgr9iqSBYaeEfWNrZi00QQVIJElMEMYgci2xAcMnO6k6myYXtBt5h5s3b3VotJ2jiGj284wZreWsrD5bx4nf62JgE4CKn+Ci3kwA8jgF8YS424HkMAOangCkgNaCF9cBnBTNVA8rmDYcpAaPspAbcpwYMUgMeUgP2UgH6OAoqHghoCZ8Dq5gNLh4ISD4JowPGfZDAUmzAXQFgNzbgsgDwhHpMwH4BQHZM21H6AQv4CECEpocrZXoHJxUCRumgEQqo4zUC4qzMLmxiUDGgHQzIEAf4TAbIEFvoVgQ4LQ3IEA2c+99udLD4J8APSBPHhr/rbcNXbVG6hsMt9xp+A1l4lyM/XKFVAAAAAElFTkSuQmCC"/>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=lucyxyuno.github.io/shooting-stars">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABEElEQVRYhe3WvUrDUBgG4CIquOggOJUijl6Do4iL4OBNOAjOgm7iZlFBcPECHJxdXNpRL8HFSd1EHcS/x6ERRJuTpqk5CHnhg0BOzvsM4SS1Ws5g0e+s5t2n72AjNuAsGgB1vMcEHHYpLweAeXxEAWAOjynlfwfAJA7wGiiHNo5SZqef4nGc4DmjuJdc9wNoDKC4AvxvwDBmfsxFoGSzy/qvaeQGpKDaAUApJ2EFqAAVoAKEAGtlAM4DgN0yAKcBwD1mU54bxTqmigL2AwB4QBNLOv+QK9jDXXK/2EcJyxmArBQGDOEyGiBB1HEVDZAgJnCMtx6Lb7GNsYEAvkGmsYUWbvCCp+S6pfMCLmAktM8nZfGvQaHxgWgAAAAASUVORK5CYII="/>
+        </a>
+      </li>
+      <li>
+        <a href="http://www.stumbleupon.com/submit?url=lucyxyuno.github.io/shooting-stars">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABh0lEQVRYhe3VP0tcURCG8VVQSZBUaiMoap9CC0Gws0ybCLEQrUUIiCGinZiIgpZpLW0CAdMmiCEfwMLKyoCQIjZL/EeSX4q9C4fj7mXv3V0TyL4wzZ15Zx6Gc+4pFP43oR9j5fgbAK8FagG0AFoALYB/HwA9mMM63qTEOubR0zAAvEBRNhWxWDcAXmYcHGs5NwBGcBs1/ImLlIjrbzCcF2AtaraNh1XXVfJ0YSPyreYF2AtqimhPGx742pNtlLWfF+BtUPMLA7UAJN7jwHuQF+B5tMoTzGAcg2kbaRRAJ05V11esoLMpAEnhY3xPgYBPeNAUgKR4CO+VrmA17TQNIDD1YQrT2MRV0OMa3U0FqNBkMdrCZBWADxW8W40AWEgB+BJ8P0NXkGvD5yD/rYCnGWJa6W93GTS5wqNgyGYE9xGzSld7P8q9K6hfu9F2BvCjBt9vjNcLcKjCG4Fn7j5O8fClcnEeneMVOlLOyQSOkmGhjvEkLBzLGCNoy3BgezGaePtr9d2b/gBG4RJQ4yIdqgAAAABJRU5ErkJggg=="/>
+        </a>
+      </li>
+      <li>
+        <a href="https://pinterest.com/pin/create/bookmarklet/?url=lucyxyuno.github.io/shooting-stars">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACXklEQVRYhb3WT2jPYRwHcLYaRpaDVhblYiMcpmk38y+tkfI3ZQfFYVL+FHER5c/JxYESDkrDWTlRZnGRciVqlBxs+VMWw8vh912+nj2/5/f7mu1z/L7/fp/v83t+z5QpBQYtOI17GMAQfmAQz3Ebe9FUxLea4HY8VP2M4CaWjDd4Gq7gV5mgb9kqDCfww5j6L+ENeBIxfYmjWIzajFuDRTiOdxHNpaLhdbgfmHzBAdRU0M5Cb6TEsSIFLgTit1hWQD8V1yKfY2E14qVKm2h0PmNp1e3/+NTjfVDiejXCq4FoX4BvwFN8xC00JrzOBV5DyU+I6fiUE7yQbbQMb8f3wPROwq/D2GlNFWgLyCcDvC9i+CrhNy/C354qsCsgr81hTeLnQV/CryHC35Mq0BOQm3PYuogZXCxYoCdVoDsgt+awLWUKbEr4NUf4W1MFNgXk7hzWGjH7ihkJv20RzcpUgQUBuT+H1eB1gN8ta1bSnA/43zE7pYnt9K4cFv437E/41OBNwH+QDM+EbUrH5uhczp7PNPYM6Ej4bAzXHocqFsjEa5QuHHA8e7Y+YthSRl+ndEHJz2DF5Q9MpmOr7KjFmUiBHRFdLW5EuCeqDi9T6FHE9D12Kv3e67AKDyK8ftSNJ7ze3/uiyAxg7njfPvz+feLLHHvzeeMKzwqcDYxPZc878SzAfuIxdqtweypSILyedQZ4I1ZguSI7vUCBD7nwH5jz30MS4XODt698mv3nAuGf0MHJLtCZCx/B/Mku0JUr0Dup4VmBzVn4sGru9RNQYHVWYO+kh2cFmnFkovx/A4FhDq/tdLM6AAAAAElFTkSuQmCC"/>
+        </a>
+      </li>
     </ul>
     <br><br>
     <h2>About</h2>
