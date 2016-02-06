@@ -57,7 +57,7 @@ a {
 #menu {
   position: absolute;
   top: calc(100% - 47px);
-  left: 0;
+  left: calc(100% - 339px);
   display: none;
 }
 
