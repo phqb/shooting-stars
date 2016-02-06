@@ -281,7 +281,7 @@ function app() {
   var w = window.innerWidth, h = window.innerHeight;
   if (w < h) { var tmp = w; w = h; h = tmp; }
   var cv = document.getElementById('app');
-  if (isRetina()) { factor = 2; w *= factor; h *= factor; }
+  if (isRetina() || isHighDensity()) { factor = 2; w *= factor; h *= factor; }
   cv.setAttribute('width', w + 'px');
   cv.setAttribute('height', h + 'px');
   new_game = new Game(w, h, 'app');
