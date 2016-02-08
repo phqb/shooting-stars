@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
   <meta charset="UTF-8">
   <meta name="description" content="A mini game inspired by The Night Sky">
   <meta name="keywords" content="stars shooting star night sky">
@@ -13,10 +14,14 @@
   <script src="js/easeljs-0.8.2.min.js"></script>
   <script src="js/tweenjs-0.6.2.min.js"></script>
   <script src="js/utils.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/game.js"></script>
+  <script type="text/javascript" src="js/index.js"></script>
+  <script>
+    document.onload = app.initialize.bind(app);
+  </script>
 </head>
-<body onload="app();" onresize="resize();" ondblclick="show_menu();" onscroll="scroll();">
-  <div id="welcome" onclick="show_app();">
+<body onresize="resize();">
+  <div id="welcome" onclick="show_game();">
     <h1>Shooting Stars</h1>
     <h2>A mini game inspired by The Night Sky</h2>
     <br>
@@ -28,17 +33,21 @@
     <h3>The Yellow Star goes first.</h3>
     <br>
     <h3>Notice:</h3>
-    <h3><b>Double tap to invoke menu.</b></h3>
+    <h3><b>While playing, tap to invoke menu.</b></h3>
+    <br>
+    <h3>Soundtracks:</h3>
+    <a href="http://kagayastudio.narod.ru/music/"><h3>Fantasy Railroad in the Stars (2007)</h3></a>
+    <h3>This game requires Internet connection to stream audio.</h3>
     <br><br>
     <h2 class="blinkme">Tap to continue</h2>
   </div>
-  <div id="app-ctn" class="app">
-    <canvas id="app"></canvas>
-    <div id="menu" onclick="hide_menu();">
-      <span class="btn" onclick="app();">Play again</span>
-      <span class="btn" onclick="take_a_screenshot();">Take a screenshot</span>
-      <a href="http://lucyxyuno.github.io/shooting-stars"><span class="btn">Website</span></a>
-    </div>
+  <div id="game-ctn" class="game">
+    <canvas id="game"></canvas>
   </div>
+  <div id="menu" onclick="hide_menu();">
+    <span class="btn" onclick="game();">Play again</span>
+    <a href="http://lucyxyuno.github.io/shooting-stars"><span class="btn">Website</span></a>
+  </div>
+  <audio autoplay id="bgm" src="" onended="bgm_next_song();" type="audio/mpeg"></audio>
 </body>
 </html>

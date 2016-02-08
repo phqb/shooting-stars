@@ -14,6 +14,8 @@ function Game(ww, wh, id) {
   this.stage = new createjs.Stage(id);
   this.stage.mouseMoveOutside = true;
   createjs.Touch.enable(this.stage, true, true);
+  this.bg = new createjs.Shape();
+  this.bg.graphics.beginFill('rgb(4, 13, 84)').drawRect(0, 0, ww, wh).endFill();
   this.p1 = null;
   this.p2 = null;
   this.stars = [];
@@ -28,6 +30,7 @@ function Game(ww, wh, id) {
 Game.prototype.start = function() {
   this.stage.removeAllChildren();
   this.stage.removeAllEventListeners();
+  this.stage.addChild(this.bg);
   this.p1 = new Player('p1', this);
   this.p2 = new Player('p2', this);
   this.p1.enemy = this.p2;
@@ -152,7 +155,7 @@ Player.prototype.fire = function(event) {
       type_str[this.type] + ' win!',
       type_color[this.type],
       false,
-      { event : app, on : 'mousedown' }
+      { event : game, on : 'mousedown' }
     );
   else if (kills > 1)
     this.game.show_notification(
@@ -249,14 +252,8 @@ Dot.prototype.hide_ring = function(event) {
   return { x : this.x - this.dir.u*4, y : this.y - this.dir.v*4 };
 };
 
-function take_a_screenshot() {
-  var canvas = document.getElementById('app');
-  var img = canvas.toDataURL("image/png", 1.0);
-  window.open(img, '');
-}
-
 function resize() {
-  var cv = document.getElementById('app');
+  var cv = document.getElementById('game');
   if (window.innerWidth/window.innerHeight > cv.offsetWidth/cv.offsetHeight) {
     cv.style.width = "auto";
     cv.style.height = window.innerHeight + 'px';
@@ -265,10 +262,7 @@ function resize() {
     cv.style.height = "auto";
   }
   cv.style.marginTop = window.innerHeight/2 - cv.offsetHeight/2 + 'px';
-}
-
-function scroll() {
-  document.getElementById('app-ctn').style.top = window.scrollY + 'px';
+  document.getElementById('menu').style.top = window.innerHeight - 47 + 'px';
 }
 
 var last_show_menu_time = -1;
@@ -283,19 +277,34 @@ function hide_menu() {
   last_show_menu_time = -1;
 }
 
-function show_app() {
-  document.getElementById('welcome').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+function hide_screenshot() {
+  document.getElementById('screenshot').style.display = "none";
 }
 
-function app() {
+function show_game() {
+  document.getElementById('welcome').style.display = 'none';
+  window.scrollY = 0;
+  document.onclick = show_menu;
+  game();
+}
+
+function bgm_next_song() {
+  var songs =
+    ('5kt3atg1,2effpzfo,ij253xbt,dyvb4bhm,' +
+     'ffc2levf,d3jgeh1g,trr3xkni,srm51agb,5japixlc').
+    split(',');
+  document.getElementById('bgm').src =
+    'https://a.clyp.it/' + songs[Math.floor(rand()*9)] + '.mp3';
+}
+
+function game() {
   var w = window.innerWidth, h = window.innerHeight;
   if (w < h) { var tmp = w; w = h; h = tmp; }
-  var cv = document.getElementById('app');
-  if (isRetina()) { factor = 2; w *= factor; h *= factor; }
+  var cv = document.getElementById('game');
+  if (isRetina() || isHighDensity()) { factor = 2; w *= factor; h *= factor; }
   cv.setAttribute('width', w + 'px');
   cv.setAttribute('height', h + 'px');
-  new_game = new Game(w, h, 'app');
+  new_game = new Game(w, h, 'game');
   new_game.start();
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener('tick', new_game.stage);
@@ -303,4 +312,5 @@ function app() {
     if (createjs.Ticker.getTime() - last_show_menu_time >= 2000) hide_menu();
   });
   resize();
+  bgm_next_song();
 }
