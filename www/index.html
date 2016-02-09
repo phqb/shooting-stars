@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  <meta charset="UTF-8">
+  <meta name="description" content="A mini game inspired by The Night Sky">
+  <meta name="keywords" content="stars shooting star night sky">
+  <meta name="author" content="phqb">
+  <meta property="og:image" content="http://lucyxyuno.github.io/shooting-stars/img/icon.png"/>
+  <title>phqb::Shooting Stars</title>
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link href='css/playfair_display.css' rel='stylesheet' type='text/css'>
+  <script src="js/easeljs-0.8.2.min.js"></script>
+  <script src="js/tweenjs-0.6.2.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/audio.js"></script>
+  <script type="text/javascript" src="js/index.js"></script>
+  <script>
+    document.onload = app.initialize.bind(app);
+  </script>
+</head>
+<body onresize="resize();">
+  <div id="welcome" onclick="show_game();game();">
+    <h1>Shooting Stars</h1>
+    <h2>A mini game inspired by The Night Sky</h2>
+    <br>
+    <h3>Instructions:</h3>
+    <h3>You and your friend are The Yellow Star and The White Star.</h3>
+    <h3>Pull your stars backward to shoot your friend's stars.</h3>
+    <h3><b>If you shoot your friend's biggest star, you win.</b></h3>
+    <h3>If you shoot all your friend's stars, you win.</h3>
+    <h3>The Yellow Star goes first.</h3>
+    <br>
+    <h3>Notice:</h3>
+    <h3><b>While playing, tap to invoke menu.</b></h3>
+    <br>
+    <h3>Soundtracks:</h3>
+    <h3><a class="a" href="http://kagayastudio.narod.ru/music/">Fantasy Railroad in the Stars (2007)</a></h3>
+    <br><br>
+    <h2>About</h2>
+    <h3>This game is made with <a class="a" href="http://createjs.com/">createJS</a> (EaselJS and TweenJS).</h3>
+    <h3>This website is designed by <i>phqb</i> (see Contact Author).</h3>
+    <h3>The author does not own any graphic content in this website.</h3>
+    <br><br>
+    <h2>Contact Author</h2>
+    <h3>
+      <a href="mailto:o0o.baoquocphan.o0o@gmail.com">
+        <span class="email-icon icon"><span>
+      </a>
+      <a href="https://www.facebook.com/phqbtk">
+        <span class="facebook-icon icon"><span>
+      </a>
+      <a href="https://plus.google.com/118246015296786638665">
+        <span class="googleplus-icon icon"><span>
+      </a>
+      <a href="https://www.tumblr.com/blog/baoquocphan">
+        <span class="tumblr-icon icon"><span>
+      </a>
+      <a href="https://twitter.com/lucyxyuno">
+        <span class="twitter-icon icon"><span>
+      </a>
+    </h3>
+    <br><br>
+    <h2>Source code</h2>
+    <h3>
+      <a href="https://github.com/lucyxyuno/shooting-stars">
+        <span class="github-icon icon"><span>
+      </a>
+    </h3>
+    <br><br>
+    <h2 class="blinkme">Tap to continue</h2>
+  </div>
+  <div id="game-ctn" class="game">
+    <canvas id="game"></canvas>
+  </div>
+  <div id="menu" onclick="hide_menu();">
+    <span class="btn" onclick="game();">Play again</span>
+    <a id="screenshot-img" href="" download="screenshot.png"><span class="btn" onclick="take_a_screenshot();">Take a screenshot</span></a>
+    <span id="share-btn" class="btn">
+      Share
+      <a href="https://plus.google.com/share?url=lucyxyuno.github.io/shooting-stars">
+        <span class="googleplus-icon icon"></span>
+      </a>
+      <a href="http://www.facebook.com/sharer.php?u=lucyxyuno.github.io/shooting-stars">
+      </a>
+        <span class="facebook-icon icon"></span>
+      <a href="https://twitter.com/share?url=lucyxyuno.github.io/shooting-stars">
+        <span class="twitter-icon icon"></span>
+      </a>
+      <a href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=lucyxyuno.github.io/shooting-stars">
+        <span class="tumblr-icon icon"></span>
+      </a>
+      <a href="http://www.stumbleupon.com/submit?url=lucyxyuno.github.io/shooting-stars">
+        <span class="stumpleupon-icon icon"></span>
+      </a>
+      <a href="https://pinterest.com/pin/create/bookmarklet/?url=lucyxyuno.github.io/shooting-stars">
+        <span class="pinterest-icon icon"></span>
+      </a>
+    </span>
+  </div>
+  <audio autoplay id="bgm" src="" onended="bgm_next_song();" type="audio/mpeg"></audio>
+  <span id="goto-top" class="uparrow-icon icon"></span>
+</body>
+</html>

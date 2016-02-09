@@ -1,0 +1,178 @@
+body {
+  margin: 0;
+  background-color: #000539;
+  color: white;
+  font-family: 'Playfair Display', serif;
+}
+
+h3 a {
+  color: white;
+}
+
+.a {
+  border-bottom: 2px solid white;
+}
+
+.content {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  font-weight: normal;
+  width: 100%;
+}
+
+h1 {
+  font-size: 48px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+a {
+  color: yellow;
+  text-decoration: none;
+}
+
+.btn {
+  padding: 10px;
+  height: 32px;
+  cursor: pointer;
+  display: inline-block;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 16px;
+}
+
+#menu {
+  position: absolute;
+  display: none;
+  left: 0;
+  top: calc(100% - 55px);
+}
+
+#game {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  outline-style: solid;
+  outline-color: rgba(4, 13, 84, 0.5);
+  outline-width: 16px;
+}
+
+#game-ctn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#welcome {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  z-index: 1;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  background: #000539;
+}
+
+#welcome h1 {
+  font-size: 48px;
+}
+
+#welcome h2 {
+  font-size: 20px;
+}
+
+#welcome h3 {
+  font-size: 16px;
+}
+
+.blinkme {
+  animation: blinker 2s linear infinite;
+  -webkit-animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0.0; }
+}
+@-webkit-keyframes blinker {
+  50% { opacity: 0.0; }
+}
+
+#bgm {
+  display: none;
+}
+
+#share-btn li {
+  display: inline;
+}
+
+.icon {
+  height: 32px;
+  width: 32px;
+  background-size: 32px 32px;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.uparrow-icon {
+  background-image: url('../img/arrow40.png');
+}
+
+.email-icon {
+  background-image: url('../img/email131.png');
+}
+
+.github-icon {
+  background-image: url('../img/github17.png');
+}
+
+.googleplus-icon {
+  background-image: url('../img/google-plus.png');
+}
+
+.facebook-icon {
+  background-image: url('../img/facebook2.png');
+}
+
+.twitter-icon {
+  background-image: url('../img/twitter.png');
+}
+
+.tumblr-icon {
+  background-image: url('../img/tumblr1.png');
+}
+
+.stumpleupon-icon {
+  background-image: url('../img/stumbleupon.png');
+}
+
+.pinterest-icon {
+  background-image: url('../img/pinterest30.png');
+}
+
+#screenshot-img {
+  color: white;
+}

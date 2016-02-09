@@ -1,92 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
   <meta charset="UTF-8">
   <meta name="description" content="A mini game inspired by The Night Sky">
   <meta name="keywords" content="stars shooting star night sky">
   <meta name="author" content="phqb">
   <meta property="og:image" content="http://lucyxyuno.github.io/shooting-stars/img/icon.png"/>
   <title>phqb::Shooting Stars</title>
-  <link rel="icon" href="favicon.ico" sizes="32x32">
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <link href='https://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
-  <script src="easeljs-0.8.2.min.js"></script>
-  <script src="tweenjs-0.6.2.min.js"></script>
-  <script src="utils.js"></script>
-  <script src="app.js"></script>
+  <link rel="icon" href="www/favicon.ico" sizes="32x32">
+  <link href='www/css/playfair_display.css' rel='stylesheet' type='text/css'>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: #000539;
+      margin: 0;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+    }
+
+    #noti {
+      position: absolute;
+      width: 100%;
+    }
+
+    .blinkme {
+      animation: blinker 2s linear infinite;
+      -webkit-animation: blinker 2s linear infinite;
+    }
+
+    @keyframes blinker {
+      50% { opacity: 0.0; }
+    }
+    @-webkit-keyframes blinker {
+      50% { opacity: 0.0; }
+    }
+  </style>
+  <script>
+    function align() {
+      var nt = document.getElementById('noti')
+      nt.style.top = window.innerHeight/2 - nt.offsetHeight + 'px';
+    }
+
+    setTimeout(function() {
+      var url = window.location.href;
+      var i = url.indexOf('/index.html');
+      if (i >= 0) url = url.substr(0, i);
+      if (url[url.length - 1] == '/') url = url.substr(0, url.length - 1);
+      url += '/www'
+      if (url.indexOf('file') >= 0) url += '/index.html';
+      window.location.replace(url);
+    }, 1000);
+  </script>
 </head>
-<body onload="app();" onresize="resize();" onscroll="scroll();">
-  <div class="content">
-    <h1>Shooting Stars</h1>
-    <h2>A mini game inspired by The Night Sky</h2>
-    <br>
-    <h3>Instructions:</h3>
-    <h3>You and your friend are The Yellow Star and The White Star.</h3>
-    <h3>Pull your stars backward to shoot your friend's stars.</h3>
-    <h3><b>If you shoot your friend's biggest star, you win.</b></h3>
-    <h3>If you shoot all your friend's stars, you win.</h3>
-    <h3>The Yellow Star goes first.</h3>
-    <br></br>
-  </div>
-  <canvas id="app"></canvas>
-  <div class="content">
-    <br>
-    <span class="btn" onclick="app();">Reload</span>
-    <span class="btn" onclick="take_a_screenshot();">Take a screenshoot</span>
-    <h2>Tell friends</h2>
-    <ul class="share-btn">
-      <li>
-        <a href="https://plus.google.com/share?url=lucyxyuno.github.io/shooting-stars">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACVklEQVRYhb3XX2jOURzH8W0mymoLuZkLSS1KEaWJG5NSygVxIUoWF/4UuUButBViNffciOTGXIi4kMiF/ClDIbmRRZgxsmn2cvE7q5/jeWy/3++xc/k838/n837Oec4531NVlXGgDltwAU/Ri2HlxyBOoiFrVhxci/34hgc4iL24iF9R6G0cQzvmFAoO4fW4F8yPoib6fjk+pwAGsKJwcDCvxd1g/BDVZepWR0vRh8ZKAOxJmR4epfZStBSniobX4E3KcPMo9csigD5MKAKwKDLcPkp9NXoizawiAOsjs6Nj0HRFmqZKAlwdg6YzVT+EuiIA8yOAAUzPAHA9d3jK8EkE0TZK/ZVQN4yllQBY48/9PYiFZWpnh1mCvYXDU8aHo1n4iNVRzVK8DOu+q2LhqYB1eBWBPJccPg/DLA1hY8XDUxA1aMZutEV/ODj338LLALVGAMfHG2BPBPBekYMnB8DcsO7p8QGrxhOiw99jCPsqHTQJKyVdzrWw5X6UCE+P9koE1+MQ3gXTHpzGNkknNE9yAG1FfwmI1iLhi/A6GH3FTkz8R30TuiOAXtTnCZ+H78HkhzLHbwldA25FEDvyADxKGZzIqG3A25S+M2t4c/QLMm8rScs+MjqyindHAC05AFpS+n+2cqXE8Ql3IAfA2qD9iRlZxUsigB5My+hxPmjz3Q+4GUHcN8aHBjZJruc7mJwXYCZeRBD9OI4Fon5fclUvxtkQfhlTcoWnTKfijL8fnyMwz8LMPMaX8Hk3NhQKLgHSKHkZd0nugN4Q9knSJd3AETma0N8aZ+EaNqv+LQAAAABJRU5ErkJggg=="/>
-        </a>
-      </li>
-      <li>
-        <a href="http://www.facebook.com/sharer.php?u=lucyxyuno.github.io/shooting-stars">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABFklEQVRYhe2XvYrCQBSFL8I+gJWdS8TWF9h6wa18Ax/MqKWNtjbb+C7iD2gVtTafRRxQuVlHM5PZIgdOlzPnI7mQuSJXAW1gDGzwo/R6dgxEcivgBzh5KtZ0BLqmPCq53CgBIgFGAcqNhoK/b26jjZANh0vtgQUwffBWeTYVh8U7oA98iCJgroVcAayAllZcBsAZ+Pqr3DfA7Fm5b4BeaICGUjazDbsAqCkA59IAcl63ff6NzgkwMM4BGCheugJo2gydzyGsAIIDdIC6cU5ZXfGvK4D7A3QA+3wFUAH8B4BCl9KCAGnha3lBgLUAw4AAsVnNkgAACfBpAl2yhbEsgAPw/Rhqkq3Oa14YzBcAUrL9Iebmh3YBZcDmjUb/EX0AAAAASUVORK5CYII="/>
-        </a>
-      </li>
-      <li>
-        <a href="https://twitter.com/share?url=lucyxyuno.github.io/shooting-stars">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABIElEQVRYhe3XsUoDQRQF0CBoaxXBIJjGykbQPiD4A1YWolZWgr9iqSBYaeEfWNrZi00QQVIJElMEMYgci2xAcMnO6k6myYXtBt5h5s3b3VotJ2jiGj284wZreWsrD5bx4nf62JgE4CKn+Ci3kwA8jgF8YS424HkMAOangCkgNaCF9cBnBTNVA8rmDYcpAaPspAbcpwYMUgMeUgP2UgH6OAoqHghoCZ8Dq5gNLh4ISD4JowPGfZDAUmzAXQFgNzbgsgDwhHpMwH4BQHZM21H6AQv4CECEpocrZXoHJxUCRumgEQqo4zUC4qzMLmxiUDGgHQzIEAf4TAbIEFvoVgQ4LQ3IEA2c+99udLD4J8APSBPHhr/rbcNXbVG6hsMt9xp+A1l4lyM/XKFVAAAAAElFTkSuQmCC"/>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=lucyxyuno.github.io/shooting-stars">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABEElEQVRYhe3WvUrDUBgG4CIquOggOJUijl6Do4iL4OBNOAjOgm7iZlFBcPECHJxdXNpRL8HFSd1EHcS/x6ERRJuTpqk5CHnhg0BOzvsM4SS1Ws5g0e+s5t2n72AjNuAsGgB1vMcEHHYpLweAeXxEAWAOjynlfwfAJA7wGiiHNo5SZqef4nGc4DmjuJdc9wNoDKC4AvxvwDBmfsxFoGSzy/qvaeQGpKDaAUApJ2EFqAAVoAKEAGtlAM4DgN0yAKcBwD1mU54bxTqmigL2AwB4QBNLOv+QK9jDXXK/2EcJyxmArBQGDOEyGiBB1HEVDZAgJnCMtx6Lb7GNsYEAvkGmsYUWbvCCp+S6pfMCLmAktM8nZfGvQaHxgWgAAAAASUVORK5CYII="/>
-        </a>
-      </li>
-      <li>
-        <a href="http://www.stumbleupon.com/submit?url=lucyxyuno.github.io/shooting-stars">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABh0lEQVRYhe3VP0tcURCG8VVQSZBUaiMoap9CC0Gws0ybCLEQrUUIiCGinZiIgpZpLW0CAdMmiCEfwMLKyoCQIjZL/EeSX4q9C4fj7mXv3V0TyL4wzZ15Zx6Gc+4pFP43oR9j5fgbAK8FagG0AFoALYB/HwA9mMM63qTEOubR0zAAvEBRNhWxWDcAXmYcHGs5NwBGcBs1/ImLlIjrbzCcF2AtaraNh1XXVfJ0YSPyreYF2AtqimhPGx742pNtlLWfF+BtUPMLA7UAJN7jwHuQF+B5tMoTzGAcg2kbaRRAJ05V11esoLMpAEnhY3xPgYBPeNAUgKR4CO+VrmA17TQNIDD1YQrT2MRV0OMa3U0FqNBkMdrCZBWADxW8W40AWEgB+BJ8P0NXkGvD5yD/rYCnGWJa6W93GTS5wqNgyGYE9xGzSld7P8q9K6hfu9F2BvCjBt9vjNcLcKjCG4Fn7j5O8fClcnEeneMVOlLOyQSOkmGhjvEkLBzLGCNoy3BgezGaePtr9d2b/gBG4RJQ4yIdqgAAAABJRU5ErkJggg=="/>
-        </a>
-      </li>
-      <li>
-        <a href="https://pinterest.com/pin/create/bookmarklet/?url=lucyxyuno.github.io/shooting-stars">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACXklEQVRYhb3WT2jPYRwHcLYaRpaDVhblYiMcpmk38y+tkfI3ZQfFYVL+FHER5c/JxYESDkrDWTlRZnGRciVqlBxs+VMWw8vh912+nj2/5/f7mu1z/L7/fp/v83t+z5QpBQYtOI17GMAQfmAQz3Ebe9FUxLea4HY8VP2M4CaWjDd4Gq7gV5mgb9kqDCfww5j6L+ENeBIxfYmjWIzajFuDRTiOdxHNpaLhdbgfmHzBAdRU0M5Cb6TEsSIFLgTit1hWQD8V1yKfY2E14qVKm2h0PmNp1e3/+NTjfVDiejXCq4FoX4BvwFN8xC00JrzOBV5DyU+I6fiUE7yQbbQMb8f3wPROwq/D2GlNFWgLyCcDvC9i+CrhNy/C354qsCsgr81hTeLnQV/CryHC35Mq0BOQm3PYuogZXCxYoCdVoDsgt+awLWUKbEr4NUf4W1MFNgXk7hzWGjH7ihkJv20RzcpUgQUBuT+H1eB1gN8ta1bSnA/43zE7pYnt9K4cFv437E/41OBNwH+QDM+EbUrH5uhczp7PNPYM6Ej4bAzXHocqFsjEa5QuHHA8e7Y+YthSRl+ndEHJz2DF5Q9MpmOr7KjFmUiBHRFdLW5EuCeqDi9T6FHE9D12Kv3e67AKDyK8ftSNJ7ze3/uiyAxg7njfPvz+feLLHHvzeeMKzwqcDYxPZc878SzAfuIxdqtweypSILyedQZ4I1ZguSI7vUCBD7nwH5jz30MS4XODt698mv3nAuGf0MHJLtCZCx/B/Mku0JUr0Dup4VmBzVn4sGru9RNQYHVWYO+kh2cFmnFkovx/A4FhDq/tdLM6AAAAAElFTkSuQmCC"/>
-        </a>
-      </li>
-    </ul>
-    <br><br>
-    <h2>Play on mobile</h2>
-    <a href="release/android/android-debug.apk">
-      <img src="data:image/png;base64,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"/>
-    </a>
-    <p>(Only tested on Android 4.4.1)</p>
-    <br><br>
-    <h2>About</h2>
-    <h3>This game is made with <a href="http://createjs.com/">createJS</a> (EaselJS and TweenJS).</h3>
-    <h3>This website is designed by <i>phqb</i> (see Contact Author).</h3>
-    <h3>The author does not own any graphic content in this website.</h3>
-    <br><br>
-    <h2>Contact Author</h2>
-    <h3><a href="mailto:o0o.baoquocphan.o0o@gmail.com">o0o.baoquocphan.o0o@gmail.com</a></h3>
-    <h3><a href="https://www.facebook.com/phqbtk">Facebook</a></h3>
-    <h3><a href="https://plus.google.com/118246015296786638665">Google Plus</a></h3>
-    <h3><a href="https://www.tumblr.com/blog/baoquocphan">Tumblr</a></h3>
-    <h3><a href="https://twitter.com/lucyxyuno">Twitter</a></h3>
-    <br><br>
-    <h2>Source code</h2>
-    <h3><a href="https://github.com/lucyxyuno/shooting-stars">Github</a></h3>
-  </div>
+<body onload="align();" onresize="align();">
+  <h1 id="noti" class="blinkme">Redirecting...</h1>
 </body>
 </html>

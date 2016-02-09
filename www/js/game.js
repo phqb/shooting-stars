@@ -14,12 +14,14 @@ function Game(ww, wh, id) {
   this.stage = new createjs.Stage(id);
   this.stage.mouseMoveOutside = true;
   createjs.Touch.enable(this.stage, true, true);
+  this.bg = new createjs.Shape();
+  this.bg.graphics.beginFill('rgb(4, 13, 84)').drawRect(0, 0, ww, wh).endFill();
   this.p1 = null;
   this.p2 = null;
   this.stars = [];
   this.notification = new createjs.Text('', 48*factor + 'px Playfair Display');
   this.notification.x = ww/2;
-  this.notification.y = wh/2;
+  this.notification.y = wh/2 - 24*factor;
   this.notification.scaleX = this.notification.scaleY = 0;
   this.notification.textAlign = 'center';
   this.notification.shadow = new createjs.Shadow('white', 0, 0, 8*factor);
@@ -28,14 +30,17 @@ function Game(ww, wh, id) {
 Game.prototype.start = function() {
   this.stage.removeAllChildren();
   this.stage.removeAllEventListeners();
+  this.stage.addChild(this.bg);
   this.p1 = new Player('p1', this);
   this.p2 = new Player('p2', this);
   this.p1.enemy = this.p2;
   this.p2.enemy = this.p1;
   this.p1.point_text.shadow.blur = 8*factor;
   this.p1.switch_turn();
-  this.p1.add(new Dot('p1', rand()*this.ww, rand()*this.wh));
-  this.p2.add(new Dot('p2', rand()*this.ww, rand()*this.wh));
+  this.p1.add(new Dot('p1', 8*factor + rand()*(this.ww - 16*factor),
+    8*factor + rand()*(this.wh - 16*factor)));
+  this.p2.add(new Dot('p2', 8*factor + rand()*(this.ww - 16*factor),
+    8*factor + rand()*(this.wh - 16*factor)));
   for (i = 0; i < 100; ++i) {
     this.stars[i] = new createjs.Shape();
     this.stars[i].graphics
@@ -150,7 +155,7 @@ Player.prototype.fire = function(event) {
       type_str[this.type] + ' win!',
       type_color[this.type],
       false,
-      { event : app, on : 'mousedown' }
+      { event : game, on : 'mousedown' }
     );
   else if (kills > 1)
     this.game.show_notification(
@@ -247,46 +252,17 @@ Dot.prototype.hide_ring = function(event) {
   return { x : this.x - this.dir.u*4, y : this.y - this.dir.v*4 };
 };
 
-function take_a_screenshot() {
-  var canvas = document.getElementById('app');
-  var img = canvas.toDataURL("image/png", 1.0);
-  window.open(img, '');
-}
-
-function resize() {
-  var cv = document.getElementById('app');
-  if (window.innerWidth/window.innerHeight > cv.offsetWidth/cv.offsetHeight) {
-    cv.style.width = "auto";
-    cv.style.height = window.innerHeight + 'px';
-  } else {
-    cv.style.width = window.innerWidth + 'px';
-    cv.style.height = "auto";
-  }
-}
-
-var app_snapped = false;
-
-function scroll() {
-  var cv = document.getElementById('app');
-  if ((window.scrollY + window.innerHeight - cv.offsetTop)/cv.offsetHeight >= 0.5) {
-    if (!app_snapped) {
-      window.scrollTo(window.scrollX, cv.offsetTop);
-      app_snapped = true;
-    }
-  } else
-    app_snapped = false;
-}
-
-function app() {
+function game() {
   var w = window.innerWidth, h = window.innerHeight;
   if (w < h) { var tmp = w; w = h; h = tmp; }
-  var cv = document.getElementById('app');
+  var cv = document.getElementById('game');
   if (isRetina() || isHighDensity()) { factor = 2; w *= factor; h *= factor; }
   cv.setAttribute('width', w + 'px');
   cv.setAttribute('height', h + 'px');
-  new_game = new Game(w, h, 'app');
+  new_game = new Game(w, h, 'game');
   new_game.start();
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener('tick', new_game.stage);
   resize();
+  bgm_next_song();
 }
