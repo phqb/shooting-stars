@@ -34,7 +34,7 @@ function take_a_screenshot() {
 function show_game() {
   document.getElementById('welcome').style.display = 'none';
   window.scrollY = 0;
-  document.onclick = show_menu;
+  window.onclick = show_menu;
 }
 
 setInterval(function() {
