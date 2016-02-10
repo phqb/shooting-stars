@@ -23,8 +23,10 @@
     }
 
     #noti {
-      position: absolute;
       width: 100%;
+      position: absolute;;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .blinkme {
@@ -40,11 +42,6 @@
     }
   </style>
   <script>
-    function align() {
-      var nt = document.getElementById('noti')
-      nt.style.top = window.innerHeight/2 - nt.offsetHeight + 'px';
-    }
-
     setTimeout(function() {
       var url = window.location.href;
       var i = url.indexOf('/index.html');
