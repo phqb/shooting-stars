@@ -59,8 +59,8 @@ a {
 #menu {
   position: absolute;
   display: none;
-  left: 0;
-  top: calc(100% - 55px);
+  top: 100%;
+  transform: translateY(-55px);
 }
 
 #game {
@@ -126,6 +126,12 @@ a {
 
 #share-btn li {
   display: inline;
+}
+
+.v-center {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .icon {

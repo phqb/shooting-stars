@@ -263,6 +263,5 @@ function game() {
   new_game.start();
   createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener('tick', new_game.stage);
-  resize();
   bgm_next_song();
 }

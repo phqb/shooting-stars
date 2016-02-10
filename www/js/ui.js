@@ -2,12 +2,11 @@ function resize() {
   var cv = document.getElementById('game');
   if (window.innerWidth/window.innerHeight > cv.offsetWidth/cv.offsetHeight) {
     cv.style.width = "auto";
-    cv.style.height = window.innerHeight + 'px';
+    cv.style.height = "100%";
   } else {
-    cv.style.width = window.innerWidth + 'px';
+    cv.style.width = "100%";
     cv.style.height = "auto";
   }
-  cv.style.marginTop = window.innerHeight/2 - cv.offsetHeight/2 + 'px';
 }
 
 var last_show_menu_time = -1;

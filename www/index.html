@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  <meta name="viewport" content="user-scalable=no, initial-scale=1.0001, maximum-scale=1.0001, minimum-scale=1.0001, width=device-width, height=device-height, target-densitydpi=device-dpi" />
   <meta charset="UTF-8">
   <meta name="description" content="A mini game inspired by The Night Sky">
   <meta name="keywords" content="stars shooting star night sky">
@@ -74,11 +74,13 @@
     <h2 class="blinkme">Tap to continue</h2>
   </div>
   <div id="game-ctn" class="game">
-    <canvas id="game"></canvas>
+    <canvas id="game" class="v-center"></canvas>
   </div>
   <div id="menu" onclick="hide_menu();">
     <span class="btn" onclick="game();">Play again</span>
-    <a id="screenshot-img" href="" download="screenshot.png"><span class="btn" onclick="take_a_screenshot();">Take a screenshot</span></a>
+    <a id="screenshot-img" href="" download="screenshot.png">
+      <span class="btn" onclick="take_a_screenshot();">Take a screenshot</span>
+    </a>
     <span id="share-btn" class="btn">
       Share
       <a href="https://plus.google.com/share?url=lucyxyuno.github.io/shooting-stars">
@@ -102,6 +104,5 @@
     </span>
   </div>
   <audio autoplay id="bgm" src="" onended="bgm_next_song();" type="audio/mpeg"></audio>
-  <span id="goto-top" class="uparrow-icon icon"></span>
 </body>
 </html>
