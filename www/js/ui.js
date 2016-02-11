@@ -12,13 +12,17 @@ function resize() {
 var last_show_menu_time = -1;
 
 function show_menu() {
-  document.getElementById('menu').style.display = "block";
-  last_show_menu_time = new Date().getTime();
+  if (document.getElementById('menu').style.display == "none") {
+    document.getElementById('menu').style.display = "block";
+    last_show_menu_time = new Date().getTime();
+  }
 }
 
 function hide_menu() {
-  document.getElementById('menu').style.display = "none";
-  last_show_menu_time = -1;
+  if (document.getElementById('menu').style.display == "block") {
+    document.getElementById('menu').style.display = "none";
+    last_show_menu_time = -1;
+  }
 }
 
 var screenshot_count = 0;
@@ -33,8 +37,10 @@ function take_a_screenshot() {
 
 function show_game() {
   document.getElementById('welcome').style.display = 'none';
+  document.getElementById('menu').style.display = 'none';
   window.scrollY = 0;
   window.ondblclick = show_menu;
+  window.onclick = hide_menu;
   window.addEventListener('touch', show_menu);
   window.addEventListener('touchstart', show_menu);
 }
