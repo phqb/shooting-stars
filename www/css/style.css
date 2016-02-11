@@ -60,7 +60,7 @@ a {
   position: absolute;
   display: none;
   top: 100%;
-  transform: translateY(-55px);
+  transform: translateY(-100%);
 }
 
 #game {

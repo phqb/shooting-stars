@@ -34,7 +34,7 @@ function take_a_screenshot() {
 function show_game() {
   document.getElementById('welcome').style.display = 'none';
   window.scrollY = 0;
-  window.onclick = show_menu;
+  window.ondblclick = show_menu;
   window.addEventListener('touch', show_menu);
   window.addEventListener('touchstart', show_menu);
 }
